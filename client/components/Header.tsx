@@ -20,7 +20,7 @@ export default function Header() {
           <Link to="/login">Login</Link>
         </Button>
         <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-6">
-          <Link to="/">Get Started</Link>
+          <Link to="/login">Get Started</Link>
         </Button>
       </div>
     </header>
