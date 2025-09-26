@@ -1,10 +1,22 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useEffect, useRef } from "react";
 
 export default function Login() {
+  const location = useLocation();
+  const emailRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    const state = (location.state as { focusEmail?: boolean } | null) || null;
+    if (state?.focusEmail && emailRef.current) {
+      emailRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+      setTimeout(() => emailRef.current?.focus({ preventScroll: true }), 350);
+    }
+  }, [location]);
+
   return (
     <div className="min-h-screen orion-bg flex flex-col">
       {/* Compact brand header */}
@@ -37,13 +49,13 @@ export default function Login() {
               <CardContent className="space-y-5 pt-6">
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" placeholder="you@example.com" autoComplete="email" />
+                  <Input ref={emailRef} id="email" type="email" placeholder="you@example.com" autoComplete="email" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="password">Password</Label>
                   <Input id="password" type="password" placeholder="••••••••" autoComplete="current-password" />
                 </div>
-                <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
+                <Button className="w-full bg-primary text-white hover:bg-primary/90">
                   Continue to Dashboard
                 </Button>
                 <div className="flex items-center gap-3">
