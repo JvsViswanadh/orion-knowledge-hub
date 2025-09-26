@@ -17,10 +17,10 @@ export default function Header() {
       {/* Navigation Buttons */}
       <div className="flex items-center gap-4">
         <Button asChild variant="ghost" className="text-foreground hover:text-primary hover:bg-transparent">
-          <Link to="/login">Login</Link>
+          <Link to={{ pathname: "/login" }} state={{ focusEmail: true }}>Login</Link>
         </Button>
-        <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-6">
-          <Link to="/login">Get Started</Link>
+        <Button asChild className="bg-primary hover:bg-primary/90 text-white font-medium px-6">
+          <Link to={{ pathname: "/login" }} state={{ focusEmail: true }}>Get Started</Link>
         </Button>
       </div>
     </header>
