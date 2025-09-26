@@ -11,7 +11,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           {/* Copyright */}
           <p className="text-sm text-muted-foreground">
-            © 2024 Orion Knowledge Hub. All rights reserved.
+            © 2025 Orion Knowledge Hub. All rights reserved.
           </p>
 
           {/* Footer Links */}
