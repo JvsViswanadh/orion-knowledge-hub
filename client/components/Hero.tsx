@@ -17,10 +17,11 @@ export default function Hero() {
 
       {/* Description */}
       <p className="text-muted-foreground text-lg md:text-xl leading-relaxed mb-4 max-w-3xl mx-auto">
-        Designed for professionals and students who need to unlock insights faster — upload,
-        summarize, and ask your documents in seconds. Join our early access program. Be the first
-        to experience{" "}
-        <span className="text-primary font-medium">AI-powered learning</span> and productivity.
+        Designed for professionals and students who need to unlock insights
+        faster — upload, summarize, and ask your documents in seconds. Join our
+        early access program. Be the first to experience{" "}
+        <span className="text-primary font-medium">AI-powered learning</span>{" "}
+        and productivity.
       </p>
 
       {/* CTA Button */}
@@ -30,7 +31,9 @@ export default function Hero() {
           size="lg"
           className="bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-4 text-lg rounded-lg"
         >
-          <Link to={{ pathname: "/login" }} state={{ focusEmail: true }}>Get Started — Free Beta Access</Link>
+          <Link to={{ pathname: "/login" }} state={{ focusEmail: true }}>
+            Get Started — Free Beta Access
+          </Link>
         </Button>
       </div>
     </section>

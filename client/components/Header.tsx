@@ -7,7 +7,11 @@ export default function Header() {
       {/* Orion Logo */}
       <div className="flex items-center">
         <div className="w-6 h-6 bg-primary rounded mr-3">
-          <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full text-white">
+          <svg
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="w-full h-full text-white"
+          >
             <rect width="24" height="24" rx="4" />
           </svg>
         </div>
@@ -16,11 +20,22 @@ export default function Header() {
 
       {/* Navigation Buttons */}
       <div className="flex items-center gap-4">
-        <Button asChild variant="ghost" className="text-foreground hover:text-primary hover:bg-transparent">
-          <Link to={{ pathname: "/login" }} state={{ focusEmail: true }}>Login</Link>
+        <Button
+          asChild
+          variant="ghost"
+          className="text-foreground hover:text-primary hover:bg-transparent"
+        >
+          <Link to={{ pathname: "/login" }} state={{ focusEmail: true }}>
+            Login
+          </Link>
         </Button>
-        <Button asChild className="bg-primary hover:bg-primary/90 text-white font-medium px-6">
-          <Link to={{ pathname: "/login" }} state={{ focusEmail: true }}>Get Started</Link>
+        <Button
+          asChild
+          className="bg-primary hover:bg-primary/90 text-white font-medium px-6"
+        >
+          <Link to={{ pathname: "/login" }} state={{ focusEmail: true }}>
+            Get Started
+          </Link>
         </Button>
       </div>
     </header>

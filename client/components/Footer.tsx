@@ -2,7 +2,7 @@ export default function Footer() {
   const footerLinks = [
     { name: "Privacy Policy", href: "#" },
     { name: "Terms of Service", href: "#" },
-    { name: "Contact Us", href: "#" }
+    { name: "Contact Us", href: "#" },
   ];
 
   return (
@@ -17,7 +17,7 @@ export default function Footer() {
           {/* Footer Links */}
           <div className="flex gap-6">
             {footerLinks.map((link, index) => (
-              <a 
+              <a
                 key={index}
                 href={link.href}
                 className="text-sm text-muted-foreground hover:text-primary transition-colors"
