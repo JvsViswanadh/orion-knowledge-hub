@@ -28,9 +28,9 @@ export default function Hero() {
         <Button
           asChild
           size="lg"
-          className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8 py-4 text-lg rounded-lg"
+          className="bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-4 text-lg rounded-lg"
         >
-          <Link to="/login">Get Started — Free Beta Access</Link>
+          <Link to={{ pathname: "/login" }} state={{ focusEmail: true }}>Get Started — Free Beta Access</Link>
         </Button>
       </div>
     </section>
