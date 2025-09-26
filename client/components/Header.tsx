@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   return (
@@ -15,11 +16,11 @@ export default function Header() {
 
       {/* Navigation Buttons */}
       <div className="flex items-center gap-4">
-        <Button variant="ghost" className="text-foreground hover:text-primary hover:bg-transparent">
-          Login
+        <Button asChild variant="ghost" className="text-foreground hover:text-primary hover:bg-transparent">
+          <Link to="/login">Login</Link>
         </Button>
-        <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-6">
-          Get Started
+        <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-6">
+          <Link to="/">Get Started</Link>
         </Button>
       </div>
     </header>
