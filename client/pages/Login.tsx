@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -7,6 +7,7 @@ import { useEffect, useRef } from "react";
 
 export default function Login() {
   const location = useLocation();
+  const navigate = useNavigate();
   const emailRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
@@ -76,7 +77,7 @@ export default function Login() {
                     autoComplete="current-password"
                   />
                 </div>
-                <Button className="w-full bg-primary text-white hover:bg-primary/90">
+                <Button onClick={() => navigate("/dashboard")} className="w-full bg-primary text-white hover:bg-primary/90">
                   Continue to Dashboard
                 </Button>
                 <div className="flex items-center gap-3">
