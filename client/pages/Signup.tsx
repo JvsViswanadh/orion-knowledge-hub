@@ -83,7 +83,7 @@ export default function Signup() {
                 </div>
                 <Button
                   type="button"
-                  onClick={goLogin}
+                  onClick={goDashboard}
                   className="w-full bg-primary text-white hover:bg-primary/90"
                 >
                   Create Account
