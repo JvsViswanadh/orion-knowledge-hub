@@ -116,7 +116,7 @@ export default function Dashboard() {
                         <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground">
                           <Share className="w-4 h-4" />
                         </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive">
+                        <Button aria-label="Delete document" onClick={() => handleDelete(doc.id)} variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive">
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
