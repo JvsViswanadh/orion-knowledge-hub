@@ -132,7 +132,11 @@ export default function Login() {
                 </div>
                 <p className="text-xs text-muted-foreground text-center">
                   Don&apos;t have an account?{" "}
-                  <Link to={{ pathname: "/signup" }} state={{ focusEmail: true }} className="text-primary hover:underline">
+                  <Link
+                    to={{ pathname: "/signup" }}
+                    state={{ focusEmail: true }}
+                    className="text-primary hover:underline"
+                  >
                     Sign up
                   </Link>
                 </p>
