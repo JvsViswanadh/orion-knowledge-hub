@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Upload, FileText, Share, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export default function Dashboard() {
-  const documents = [
+  const initialDocs = [
     {
       id: 1,
       title: "Market Analysis Report Q3 2024",
@@ -13,7 +15,7 @@ export default function Dashboard() {
     {
       id: 2,
       title: "Project Phoenix: Initial Proposal",
-      uploadDate: "Oct 12, 2024", 
+      uploadDate: "Oct 12, 2024",
       description: "This document outlines the initial proposal for Project Phoenix, a strategic initiative to overhaul our digital infrastructure. It covers goals, timeline, budget estimates, and key stakeholders. The project aims to enhance..."
     },
     {
@@ -23,6 +25,21 @@ export default function Dashboard() {
       description: "A compilation of user feedback regarding the new onboarding flow. Common themes include a desire for more guided tours, clearer call-to-actions, and a more personalized experience. Several users reported..."
     }
   ];
+
+  const [documents, setDocuments] = useState(initialDocs);
+
+  const handleDelete = (id: number) => {
+    const previous = documents;
+    const removed = previous.find((d) => d.id === id);
+    setDocuments(previous.filter((d) => d.id !== id));
+    toast("Document deleted", {
+      description: removed?.title,
+      action: {
+        label: "Undo",
+        onClick: () => setDocuments(previous),
+      },
+    });
+  };
 
   return (
     <div className="min-h-screen orion-bg">
