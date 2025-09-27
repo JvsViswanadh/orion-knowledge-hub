@@ -10,6 +10,7 @@ export default function Signup() {
   const emailRef = useRef<HTMLInputElement | null>(null);
 
   const goLogin = () => navigate("/login", { state: { focusEmail: true } });
+  const goDashboard = () => navigate("/dashboard");
 
   return (
     <div className="min-h-screen orion-bg flex flex-col">
