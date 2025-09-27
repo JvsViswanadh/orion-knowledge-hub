@@ -77,7 +77,10 @@ export default function Login() {
                     autoComplete="current-password"
                   />
                 </div>
-                <Button onClick={() => navigate("/dashboard")} className="w-full bg-primary text-white hover:bg-primary/90">
+                <Button
+                  onClick={() => navigate("/dashboard")}
+                  className="w-full bg-primary text-white hover:bg-primary/90"
+                >
                   Continue to Dashboard
                 </Button>
                 <div className="flex items-center gap-3">
