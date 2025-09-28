@@ -2,7 +2,7 @@ import { useState, useRef, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
-import { Upload, FileText, X } from "lucide-react";
+import { Upload, FileText, X, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 
 interface UploadFile {
@@ -10,6 +10,7 @@ interface UploadFile {
   file: File;
   progress: number;
   status: "uploading" | "completed" | "error";
+  error?: string;
 }
 
 interface UploadModalProps {
@@ -18,12 +19,53 @@ interface UploadModalProps {
   onFilesUploaded: (files: Array<{ id: number; title: string; uploadDate: string; description: string }>) => void;
 }
 
+const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
+const ALLOWED_TYPES = [
+  'application/pdf',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'text/plain',
+  'application/vnd.ms-excel',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+];
+
 export default function UploadModal({ open, onOpenChange, onFilesUploaded }: UploadModalProps) {
   const [uploadFiles, setUploadFiles] = useState<UploadFile[]>([]);
   const [isDragOver, setIsDragOver] = useState(false);
+  const [errors, setErrors] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const validateFile = (file: File): string | null => {
+    if (file.size > MAX_FILE_SIZE) {
+      return `File size exceeds 20MB limit (${(file.size / 1024 / 1024).toFixed(2)}MB)`;
+    }
+
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      return `Invalid file format. Only PDF, DOC, DOCX, TXT, XLS, XLSX files are allowed`;
+    }
+
+    return null;
+  };
+
   const handleFiles = useCallback((files: FileList) => {
+    setErrors([]);
+    const newErrors: string[] = [];
+    const validFiles: File[] = [];
+
+    Array.from(files).forEach((file) => {
+      const error = validateFile(file);
+      if (error) {
+        newErrors.push(`${file.name}: ${error}`);
+      } else {
+        validFiles.push(file);
+      }
+    });
+
+    if (newErrors.length > 0) {
+      setErrors(newErrors);
+    }
+
+    if (validFiles.length === 0) return;
     const newFiles = Array.from(files).map((file) => ({
       id: Math.random().toString(36).substring(7),
       file,
