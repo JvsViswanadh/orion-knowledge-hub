@@ -66,7 +66,7 @@ export default function UploadModal({ open, onOpenChange, onFilesUploaded }: Upl
     }
 
     if (validFiles.length === 0) return;
-    const newFiles = Array.from(files).map((file) => ({
+    const newFiles = validFiles.map((file) => ({
       id: Math.random().toString(36).substring(7),
       file,
       progress: 0,
@@ -160,6 +160,21 @@ export default function UploadModal({ open, onOpenChange, onFilesUploaded }: Upl
         </DialogHeader>
 
         <div className="space-y-6">
+          {/* Error Messages */}
+          {errors.length > 0 && (
+            <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <AlertCircle className="w-4 h-4 text-destructive" />
+                <span className="text-sm font-medium text-destructive">Upload Errors</span>
+              </div>
+              <ul className="text-sm text-destructive space-y-1">
+                {errors.map((error, index) => (
+                  <li key={index}>• {error}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           {/* Upload Zone */}
           <div
             className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
@@ -192,7 +207,7 @@ export default function UploadModal({ open, onOpenChange, onFilesUploaded }: Upl
             />
             <div className="mt-4 pt-4 border-t border-border/40">
               <p className="text-xs text-muted-foreground">
-                Supported format: PDF (up to 20MB). Additional file formats will be supported in future updates.
+                Supported formats: PDF, DOC, DOCX, TXT, XLS, XLSX (up to 20MB each)
               </p>
             </div>
           </div>
