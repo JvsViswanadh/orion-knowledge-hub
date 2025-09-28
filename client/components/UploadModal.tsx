@@ -1,6 +1,11 @@
 import { useState, useRef, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
 import { Upload, FileText, X, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
@@ -16,20 +21,31 @@ interface UploadFile {
 interface UploadModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onFilesUploaded: (files: Array<{ id: number; title: string; uploadDate: string; description: string }>) => void;
+  onFilesUploaded: (
+    files: Array<{
+      id: number;
+      title: string;
+      uploadDate: string;
+      description: string;
+    }>,
+  ) => void;
 }
 
 const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
 const ALLOWED_TYPES = [
-  'application/pdf',
-  'application/msword',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  'text/plain',
-  'application/vnd.ms-excel',
-  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "text/plain",
+  "application/vnd.ms-excel",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
 ];
 
-export default function UploadModal({ open, onOpenChange, onFilesUploaded }: UploadModalProps) {
+export default function UploadModal({
+  open,
+  onOpenChange,
+  onFilesUploaded,
+}: UploadModalProps) {
   const [uploadFiles, setUploadFiles] = useState<UploadFile[]>([]);
   const [isDragOver, setIsDragOver] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
@@ -81,23 +97,29 @@ export default function UploadModal({ open, onOpenChange, onFilesUploaded }: Upl
         setUploadFiles((prev) =>
           prev.map((f) =>
             f.id === uploadFile.id
-              ? { ...f, progress: Math.min(f.progress + Math.random() * 30, 100) }
-              : f
-          )
+              ? {
+                  ...f,
+                  progress: Math.min(f.progress + Math.random() * 30, 100),
+                }
+              : f,
+          ),
         );
       }, 200);
 
       // Complete upload after 2-4 seconds
-      setTimeout(() => {
-        clearInterval(interval);
-        setUploadFiles((prev) =>
-          prev.map((f) =>
-            f.id === uploadFile.id
-              ? { ...f, progress: 100, status: "completed" }
-              : f
-          )
-        );
-      }, 2000 + Math.random() * 2000);
+      setTimeout(
+        () => {
+          clearInterval(interval);
+          setUploadFiles((prev) =>
+            prev.map((f) =>
+              f.id === uploadFile.id
+                ? { ...f, progress: 100, status: "completed" }
+                : f,
+            ),
+          );
+        },
+        2000 + Math.random() * 2000,
+      );
     });
   }, []);
 
@@ -110,7 +132,7 @@ export default function UploadModal({ open, onOpenChange, onFilesUploaded }: Upl
         handleFiles(files);
       }
     },
-    [handleFiles]
+    [handleFiles],
   );
 
   const handleBrowseFiles = () => {
@@ -147,7 +169,9 @@ export default function UploadModal({ open, onOpenChange, onFilesUploaded }: Upl
     toast.success(`${completedFiles.length} file(s) uploaded successfully`);
   };
 
-  const allCompleted = uploadFiles.length > 0 && uploadFiles.every((f) => f.status === "completed");
+  const allCompleted =
+    uploadFiles.length > 0 &&
+    uploadFiles.every((f) => f.status === "completed");
 
   return (
     <Dialog
@@ -162,7 +186,9 @@ export default function UploadModal({ open, onOpenChange, onFilesUploaded }: Upl
     >
       <DialogContent className="max-w-2xl bg-background border-border">
         <DialogHeader className="text-center">
-          <DialogTitle className="text-2xl font-semibold text-foreground">Upload a Document</DialogTitle>
+          <DialogTitle className="text-2xl font-semibold text-foreground">
+            Upload a Document
+          </DialogTitle>
           <p className="text-sm text-muted-foreground mt-2">
             Examples: Meeting transcripts, Lecture notes, Research papers, etc.
           </p>
@@ -174,7 +200,9 @@ export default function UploadModal({ open, onOpenChange, onFilesUploaded }: Upl
             <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
               <div className="flex items-center gap-2 mb-2">
                 <AlertCircle className="w-4 h-4 text-destructive" />
-                <span className="text-sm font-medium text-destructive">Upload Errors</span>
+                <span className="text-sm font-medium text-destructive">
+                  Upload Errors
+                </span>
               </div>
               <ul className="text-sm text-destructive space-y-1">
                 {errors.map((error, index) => (
@@ -201,9 +229,14 @@ export default function UploadModal({ open, onOpenChange, onFilesUploaded }: Upl
             <div className="mx-auto w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mb-4">
               <Upload className="w-8 h-8 text-primary" />
             </div>
-            <h3 className="text-lg font-medium text-foreground mb-2">Drag and drop a file here</h3>
+            <h3 className="text-lg font-medium text-foreground mb-2">
+              Drag and drop a file here
+            </h3>
             <p className="text-sm text-muted-foreground mb-4">or</p>
-            <Button onClick={handleBrowseFiles} className="bg-primary text-white hover:bg-primary/90">
+            <Button
+              onClick={handleBrowseFiles}
+              className="bg-primary text-white hover:bg-primary/90"
+            >
               Browse files
             </Button>
             <input
@@ -216,7 +249,8 @@ export default function UploadModal({ open, onOpenChange, onFilesUploaded }: Upl
             />
             <div className="mt-4 pt-4 border-t border-border/40">
               <p className="text-xs text-muted-foreground">
-                Supported formats: PDF, DOC, DOCX, TXT, XLS, XLSX (up to 20MB each)
+                Supported formats: PDF, DOC, DOCX, TXT, XLS, XLSX (up to 20MB
+                each)
               </p>
             </div>
           </div>
@@ -226,14 +260,19 @@ export default function UploadModal({ open, onOpenChange, onFilesUploaded }: Upl
             <div className="space-y-3">
               <h4 className="font-medium text-foreground">Uploading Files</h4>
               {uploadFiles.map((uploadFile) => (
-                <div key={uploadFile.id} className="bg-card border border-border rounded-lg p-4">
+                <div
+                  key={uploadFile.id}
+                  className="bg-card border border-border rounded-lg p-4"
+                >
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
                         <FileText className="w-4 h-4 text-primary" />
                       </div>
                       <div>
-                        <p className="font-medium text-foreground text-sm">{uploadFile.file.name}</p>
+                        <p className="font-medium text-foreground text-sm">
+                          {uploadFile.file.name}
+                        </p>
                         <p className="text-xs text-muted-foreground">
                           {(uploadFile.file.size / 1024 / 1024).toFixed(2)} MB
                         </p>
@@ -241,7 +280,9 @@ export default function UploadModal({ open, onOpenChange, onFilesUploaded }: Upl
                     </div>
                     <div className="flex items-center gap-2">
                       {uploadFile.status === "completed" && (
-                        <span className="text-xs text-green-500 font-medium">Complete</span>
+                        <span className="text-xs text-green-500 font-medium">
+                          Complete
+                        </span>
                       )}
                       <Button
                         variant="ghost"
@@ -254,7 +295,9 @@ export default function UploadModal({ open, onOpenChange, onFilesUploaded }: Upl
                     </div>
                   </div>
                   <Progress value={uploadFile.progress} className="h-2" />
-                  <p className="text-xs text-muted-foreground mt-1">{Math.round(uploadFile.progress)}%</p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {Math.round(uploadFile.progress)}%
+                  </p>
                 </div>
               ))}
             </div>
@@ -266,7 +309,10 @@ export default function UploadModal({ open, onOpenChange, onFilesUploaded }: Upl
               Cancel
             </Button>
             {allCompleted && (
-              <Button onClick={handleFinishUpload} className="bg-primary text-white hover:bg-primary/90">
+              <Button
+                onClick={handleFinishUpload}
+                className="bg-primary text-white hover:bg-primary/90"
+              >
                 Done
               </Button>
             )}
