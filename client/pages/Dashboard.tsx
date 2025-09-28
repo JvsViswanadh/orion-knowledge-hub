@@ -53,6 +53,19 @@ export default function Dashboard() {
     });
   };
 
+  const handleFilesUploaded = (newFiles: Document[]) => {
+    setDocuments((prev) => [...newFiles, ...prev]);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsUploadModalOpen(true);
+  };
+
   return (
     <div className="min-h-screen orion-bg">
       {/* Header */}
