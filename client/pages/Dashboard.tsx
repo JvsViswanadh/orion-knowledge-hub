@@ -3,6 +3,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Upload, FileText, Share, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import UploadModal from "@/components/UploadModal";
+
+interface Document {
+  id: number;
+  title: string;
+  uploadDate: string;
+  description: string;
+}
 
 export default function Dashboard() {
   const initialDocs = [
@@ -29,7 +37,8 @@ export default function Dashboard() {
     },
   ];
 
-  const [documents, setDocuments] = useState(initialDocs);
+  const [documents, setDocuments] = useState<Document[]>(initialDocs);
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
   const handleDelete = (id: number) => {
     const previous = documents;
