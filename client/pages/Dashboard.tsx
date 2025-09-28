@@ -124,7 +124,12 @@ export default function Dashboard() {
             <h2 className="text-2xl font-semibold text-foreground">
               Upload Zone
             </h2>
-            <Card className="bg-card/60 backdrop-blur border-border/60 border-2 border-dashed">
+            <Card
+              className="bg-card/60 backdrop-blur border-border/60 border-2 border-dashed cursor-pointer hover:border-primary/60 transition-colors"
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
+              onClick={() => setIsUploadModalOpen(true)}
+            >
               <CardContent className="p-8">
                 <div className="text-center space-y-4">
                   <div className="mx-auto w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center">
@@ -136,7 +141,13 @@ export default function Dashboard() {
                     </p>
                     <p className="text-sm text-muted-foreground">or</p>
                   </div>
-                  <Button className="bg-primary text-white hover:bg-primary/90">
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsUploadModalOpen(true);
+                    }}
+                    className="bg-primary text-white hover:bg-primary/90"
+                  >
                     Browse Files
                   </Button>
                   <div className="pt-4 border-t border-border/40">
@@ -205,6 +216,12 @@ export default function Dashboard() {
           </div>
         </div>
       </main>
+
+      <UploadModal
+        open={isUploadModalOpen}
+        onOpenChange={setIsUploadModalOpen}
+        onFilesUploaded={handleFilesUploaded}
+      />
     </div>
   );
 }
