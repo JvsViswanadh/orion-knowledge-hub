@@ -150,7 +150,16 @@ export default function UploadModal({ open, onOpenChange, onFilesUploaded }: Upl
   const allCompleted = uploadFiles.length > 0 && uploadFiles.every((f) => f.status === "completed");
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog
+      open={open}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) {
+          setErrors([]);
+          setUploadFiles([]);
+        }
+        onOpenChange(isOpen);
+      }}
+    >
       <DialogContent className="max-w-2xl bg-background border-border">
         <DialogHeader className="text-center">
           <DialogTitle className="text-2xl font-semibold text-foreground">Upload a Document</DialogTitle>
@@ -201,7 +210,7 @@ export default function UploadModal({ open, onOpenChange, onFilesUploaded }: Upl
               ref={fileInputRef}
               type="file"
               multiple
-              accept=".pdf,.doc,.docx,.txt,.xlsx"
+              accept=".pdf,.doc,.docx,.txt,.xls,.xlsx"
               onChange={handleFileInput}
               className="hidden"
             />
