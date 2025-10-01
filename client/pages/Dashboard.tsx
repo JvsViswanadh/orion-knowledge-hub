@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Upload, FileText, Share, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import UploadModal from "@/components/UploadModal";
 
@@ -37,8 +38,16 @@ export default function Dashboard() {
     },
   ];
 
-  const [documents, setDocuments] = useState<Document[]>(initialDocs);
+  const navigate = useNavigate();
+  const [documents, setDocuments] = useState<Document[]>(() => {
+    const stored = localStorage.getItem("documents");
+    return stored ? JSON.parse(stored) : initialDocs;
+  });
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem("documents", JSON.stringify(documents));
+  }, [documents]);
 
   const handleDelete = (id: number) => {
     const previous = documents;
@@ -170,7 +179,12 @@ export default function Dashboard() {
               {documents.map((doc) => (
                 <Card
                   key={doc.id}
-                  className="bg-card/60 backdrop-blur border-border/60 hover:bg-card/80 transition-colors"
+                  className="bg-card/60 backdrop-blur border-border/60 hover:bg-card/80 transition-colors cursor-pointer"
+                  onClick={() =>
+                    navigate(`/documents/${doc.id}`, {
+                      state: { documents },
+                    })
+                  }
                 >
                   <CardContent className="p-6">
                     <div className="flex items-start justify-between mb-3">
@@ -192,12 +206,16 @@ export default function Dashboard() {
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8 text-muted-foreground hover:text-foreground"
+                          onClick={(e) => e.stopPropagation()}
                         >
                           <Share className="w-4 h-4" />
                         </Button>
                         <Button
                           aria-label="Delete document"
-                          onClick={() => handleDelete(doc.id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDelete(doc.id);
+                          }}
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8 text-muted-foreground hover:text-destructive"
