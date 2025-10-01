@@ -85,17 +85,135 @@ export default function Dashboard() {
     navigate("/login");
   };
 
-  const handleFilesUploaded = (newFiles: Document[]) => {
-    setDocuments((prev) => [...newFiles, ...prev]);
+  const validateFile = useCallback(
+    (file: File): string | null => {
+      if (file.size > MAX_FILE_SIZE) {
+        return `${file.name}: File size exceeds 20MB limit`;
+      }
+
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        return `${file.name}: Invalid format. Only PDF, DOC, DOCX, TXT, XLS, XLSX allowed`;
+      }
+
+      return null;
+    },
+    [MAX_FILE_SIZE, ALLOWED_TYPES],
+  );
+
+  const processFiles = useCallback(
+    (files: FileList) => {
+      const newErrors: string[] = [];
+      const validFiles: File[] = [];
+
+      Array.from(files).forEach((file) => {
+        const error = validateFile(file);
+        if (error) {
+          newErrors.push(error);
+        } else {
+          validFiles.push(file);
+        }
+      });
+
+      if (newErrors.length > 0) {
+        setUploadErrors(newErrors);
+      } else {
+        setUploadErrors([]);
+      }
+
+      if (validFiles.length === 0) {
+        return;
+      }
+
+      const uploads: PendingUpload[] = validFiles.map((file) => ({
+        id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+        file,
+        progress: 0,
+        status: "uploading",
+      }));
+
+      setPendingUploads((prev) => [...prev, ...uploads]);
+
+      uploads.forEach((upload) => {
+        const interval = setInterval(() => {
+          setPendingUploads((prev) =>
+            prev.map((item) =>
+              item.id === upload.id
+                ? {
+                    ...item,
+                    progress: Math.min(item.progress + Math.random() * 25, 95),
+                  }
+                : item,
+            ),
+          );
+        }, 200);
+
+        setTimeout(() => {
+          clearInterval(interval);
+          setPendingUploads((prev) =>
+            prev.map((item) =>
+              item.id === upload.id
+                ? { ...item, progress: 100, status: "completed" }
+                : item,
+            ),
+          );
+        }, 2000 + Math.random() * 2000);
+      });
+    },
+    [validateFile],
+  );
+
+  const handleDrop = useCallback(
+    (event: React.DragEvent) => {
+      event.preventDefault();
+      if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
+        processFiles(event.dataTransfer.files);
+        event.dataTransfer.clearData();
+      }
+    },
+    [processFiles],
+  );
+
+  const handleDragOver = (event: React.DragEvent) => {
+    event.preventDefault();
   };
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
+  const handleBrowseClick = () => {
+    fileInputRef.current?.click();
   };
 
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsUploadModalOpen(true);
+  const handleFileInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      processFiles(files);
+      event.target.value = "";
+    }
+  };
+
+  const markUploadDone = () => {
+    const completed = pendingUploads.filter((upload) => upload.status === "completed");
+    if (completed.length === 0) {
+      toast.error("No completed uploads to add");
+      return;
+    }
+
+    const newDocuments = completed.map((upload, index) => ({
+      id: Date.now() + index,
+      title: upload.file.name.replace(/\.[^/.]+$/, ""),
+      uploadDate: new Date().toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      }),
+      description: `Uploaded ${upload.file.type || "document"} file. Processing complete and ready for analysis.`,
+    }));
+
+    setDocuments((prev) => [...newDocuments, ...prev]);
+    setPendingUploads((prev) => prev.filter((upload) => upload.status !== "completed"));
+    toast.success(`${newDocuments.length} file(s) added to library`);
+  };
+
+  const removePendingUpload = (id: string) => {
+    setPendingUploads((prev) => prev.filter((upload) => upload.id !== id));
   };
 
   return (
