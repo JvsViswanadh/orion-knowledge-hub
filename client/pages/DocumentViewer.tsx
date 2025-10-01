@@ -283,18 +283,18 @@ export default function DocumentViewer() {
             </Button>
             <Button
               variant="ghost"
-              className="w-full justify-start text-muted-foreground hover:text-white hover:bg-white/10"
-            >
-              <HelpCircle className="w-4 h-4 mr-3" />
-              Help & Support
-            </Button>
-            <Button
-              variant="ghost"
               className="w-full justify-start text-destructive hover:text-destructive/80 hover:bg-destructive/10"
               onClick={() => navigate("/login")}
             >
               <LogOut className="w-4 h-4 mr-3" />
               Log Out
+            </Button>
+            <Button
+              variant="ghost"
+              className="w-full justify-start text-muted-foreground hover:text-white hover:bg-white/10"
+            >
+              <HelpCircle className="w-4 h-4 mr-3" />
+              Help & Support
             </Button>
           </div>
         </aside>
