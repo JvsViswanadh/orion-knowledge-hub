@@ -376,7 +376,7 @@ export default function DocumentViewer() {
         </main>
 
         <aside className="w-[360px] shrink-0 bg-background/95 border-l border-border/20 flex flex-col">
-          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          <div className="flex-1 min-h-0 overflow-y-auto p-6 space-y-6">
             <h2 className="text-xl font-semibold text-foreground">
               AI Insights
             </h2>
