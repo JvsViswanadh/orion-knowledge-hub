@@ -61,7 +61,8 @@ export default function Dashboard() {
     const stored = localStorage.getItem("documents");
     return stored ? JSON.parse(stored) : initialDocs;
   });
-  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [pendingUploads, setPendingUploads] = useState<PendingUpload[]>([]);
+  const [uploadErrors, setUploadErrors] = useState<string[]>([]);
 
   useEffect(() => {
     localStorage.setItem("documents", JSON.stringify(documents));
