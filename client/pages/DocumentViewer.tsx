@@ -212,8 +212,8 @@ export default function DocumentViewer() {
 
   return (
     <>
-      <div className="min-h-screen orion-bg flex w-full overflow-hidden">
-        <aside className="w-[200px] shrink-0 bg-[#0A1628] border-r border-border/20 flex flex-col">
+      <div className="h-screen orion-bg flex w-full overflow-hidden">
+        <aside className="w-[200px] shrink-0 bg-[#0A1628] border-r border-border/20 flex flex-col h-full overflow-hidden">
           <div className="p-4 flex items-center gap-2">
             <div className="w-5 h-5 bg-primary rounded">
               <svg
