@@ -62,6 +62,10 @@ export default function Dashboard() {
     });
   };
 
+  const handleLogout = () => {
+    navigate("/login");
+  };
+
   const handleFilesUploaded = (newFiles: Document[]) => {
     setDocuments((prev) => [...newFiles, ...prev]);
   };
@@ -119,8 +123,11 @@ export default function Dashboard() {
           >
             Contact
           </a>
-          <Button className="bg-primary text-white hover:bg-primary/90 px-6">
-            Get Started
+          <Button
+            onClick={handleLogout}
+            className="bg-destructive text-white hover:bg-destructive/90 px-6"
+          >
+            Log Out
           </Button>
         </nav>
       </header>
