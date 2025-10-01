@@ -30,4 +30,24 @@ const App = () => (
   </TooltipProvider>
 );
 
-createRoot(document.getElementById("root")!).render(<App />);
+interface RootContainer extends HTMLElement {
+  _reactRoot?: Root;
+}
+
+const rootElement = document.getElementById("root") as RootContainer | null;
+
+if (!rootElement) {
+  throw new Error("Root element with id 'root' not found");
+}
+
+const root = rootElement._reactRoot ?? createRoot(rootElement);
+rootElement._reactRoot = root;
+
+root.render(<App />);
+
+if (import.meta.hot) {
+  import.meta.hot.dispose(() => {
+    root.unmount();
+    delete rootElement._reactRoot;
+  });
+}
