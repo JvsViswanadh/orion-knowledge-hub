@@ -212,8 +212,8 @@ export default function DocumentViewer() {
 
   return (
     <>
-      <div className="min-h-screen orion-bg flex">
-        <aside className="w-[200px] bg-[#0A1628] border-r border-border/20 flex flex-col">
+      <div className="min-h-screen orion-bg flex w-full overflow-hidden">
+        <aside className="w-[200px] shrink-0 bg-[#0A1628] border-r border-border/20 flex flex-col">
           <div className="p-4 flex items-center gap-2">
             <div className="w-5 h-5 bg-primary rounded">
               <svg
@@ -227,7 +227,7 @@ export default function DocumentViewer() {
             <span className="text-lg font-semibold text-white">Orion</span>
           </div>
 
-          <nav className="flex-1 px-3 py-4 space-y-1">
+          <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
             <Button
               variant="ghost"
               className="w-full justify-start text-muted-foreground hover:text-white hover:bg-white/10"
@@ -288,10 +288,18 @@ export default function DocumentViewer() {
               <HelpCircle className="w-4 h-4 mr-3" />
               Help & Support
             </Button>
+            <Button
+              variant="ghost"
+              className="w-full justify-start text-destructive hover:text-destructive/80 hover:bg-destructive/10"
+              onClick={() => navigate("/login")}
+            >
+              <LogOut className="w-4 h-4 mr-3" />
+              Log Out
+            </Button>
           </div>
         </aside>
 
-        <main className="flex-1 flex flex-col">
+        <main className="flex-1 min-w-0 flex flex-col overflow-hidden">
           <div className="h-14 px-6 flex items-center justify-between border-b border-border/20 bg-background/50 backdrop-blur">
             <div className="flex items-center gap-4">
               <Button
@@ -340,7 +348,7 @@ export default function DocumentViewer() {
 
           <div className="flex-1 overflow-auto p-6">
             {currentDocument ? (
-              <Card className="max-w-4xl mx-auto bg-card/60 backdrop-blur border-border/60">
+              <Card className="w-full max-w-4xl mx-auto bg-card/60 backdrop-blur border-border/60">
                 <CardContent
                   className="p-8"
                   style={{ fontSize: `${zoomLevel}%`, lineHeight: "1.5" }}
@@ -367,8 +375,8 @@ export default function DocumentViewer() {
           </div>
         </main>
 
-        <aside className="w-[400px] bg-background/95 border-l border-border/20 overflow-auto">
-          <div className="p-6 space-y-6">
+        <aside className="w-[360px] shrink-0 bg-background/95 border-l border-border/20 flex flex-col">
+          <div className="flex-1 overflow-y-auto p-6 space-y-6">
             <h2 className="text-xl font-semibold text-foreground">
               AI Insights
             </h2>
