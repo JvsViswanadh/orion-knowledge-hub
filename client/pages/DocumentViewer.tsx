@@ -381,7 +381,7 @@ export default function DocumentViewer() {
               AI Insights
             </h2>
 
-            <Accordion type="multiple" defaultValue={["summary", "qa"]}>
+            <Accordion type="multiple" defaultValue={["summary"]}>
               <AccordionItem value="summary">
                 <AccordionTrigger className="text-foreground hover:no-underline">
                   Quick Summary
