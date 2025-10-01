@@ -59,11 +59,12 @@ function DocumentContent({ document }: { document: Document }) {
         </p>
 
         <p className="text-muted-foreground">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-          veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-          commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-          velit esse cillum dolore eu fugiat nulla pariatur.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur.
         </p>
 
         <p className="text-muted-foreground">
@@ -118,7 +119,9 @@ export default function DocumentViewer() {
     }
 
     if (documentId) {
-      const selected = storedDocs.find((doc: Document) => doc.id === Number(documentId));
+      const selected = storedDocs.find(
+        (doc: Document) => doc.id === Number(documentId),
+      );
       setCurrentDocument(selected || storedDocs[0]);
     } else {
       setCurrentDocument(storedDocs[0]);
@@ -294,7 +297,9 @@ export default function DocumentViewer() {
                 variant="ghost"
                 size="icon"
                 className="h-8 w-8"
-                onClick={() => setZoomLevel((value) => Math.max(50, value - 10))}
+                onClick={() =>
+                  setZoomLevel((value) => Math.max(50, value - 10))
+                }
               >
                 <ZoomOut className="w-4 h-4" />
               </Button>
@@ -305,7 +310,9 @@ export default function DocumentViewer() {
                 variant="ghost"
                 size="icon"
                 className="h-8 w-8"
-                onClick={() => setZoomLevel((value) => Math.min(200, value + 10))}
+                onClick={() =>
+                  setZoomLevel((value) => Math.min(200, value + 10))
+                }
               >
                 <ZoomIn className="w-4 h-4" />
               </Button>
@@ -361,7 +368,9 @@ export default function DocumentViewer() {
 
         <aside className="w-[400px] bg-background/95 border-l border-border/20 overflow-auto">
           <div className="p-6 space-y-6">
-            <h2 className="text-xl font-semibold text-foreground">AI Insights</h2>
+            <h2 className="text-xl font-semibold text-foreground">
+              AI Insights
+            </h2>
 
             <Accordion type="multiple" defaultValue={["summary", "qa"]}>
               <AccordionItem value="summary">
@@ -370,9 +379,10 @@ export default function DocumentViewer() {
                 </AccordionTrigger>
                 <AccordionContent className="text-sm text-muted-foreground">
                   The report shows a 25% increase in market share for Product X,
-                  driven by a successful social media campaign. Consumer sentiment
-                  has improved substantially with a focus on product innovation.
-                  The company's leading product value to outclass marketing trends.
+                  driven by a successful social media campaign. Consumer
+                  sentiment has improved substantially with a focus on product
+                  innovation. The company's leading product value to outclass
+                  marketing trends.
                 </AccordionContent>
               </AccordionItem>
 
@@ -389,7 +399,9 @@ export default function DocumentViewer() {
                     <li>25% growth in Product X market share</li>
                     <li>Consumer sentiment improved by 18%</li>
                     <li>Social media campaign ROI exceeded targets by 40%</li>
-                    <li>Competitive landscape analysis shows strong positioning</li>
+                    <li>
+                      Competitive landscape analysis shows strong positioning
+                    </li>
                   </ul>
                 </AccordionContent>
               </AccordionItem>
@@ -442,7 +454,11 @@ export default function DocumentViewer() {
                                 >
                                   <Star
                                     className="w-4 h-4"
-                                    fill={message.highlighted ? "currentColor" : "none"}
+                                    fill={
+                                      message.highlighted
+                                        ? "currentColor"
+                                        : "none"
+                                    }
                                   />
                                 </button>
                               )}
@@ -480,8 +496,8 @@ export default function DocumentViewer() {
                 Export Options
               </h3>
               <p className="text-xs text-muted-foreground mb-4">
-                Export includes Quick Summary, Detailed Summary and any Q&A answers
-                you have starred.
+                Export includes Quick Summary, Detailed Summary and any Q&A
+                answers you have starred.
               </p>
               <div className="grid grid-cols-3 gap-2">
                 <Button
@@ -536,7 +552,10 @@ export default function DocumentViewer() {
           </div>
           <div className="flex-1 overflow-auto p-8">
             <div className="max-w-5xl mx-auto bg-card/80 border border-border/60 rounded-2xl shadow-lg">
-              <div className="p-8" style={{ fontSize: `${zoomLevel}%`, lineHeight: "1.5" }}>
+              <div
+                className="p-8"
+                style={{ fontSize: `${zoomLevel}%`, lineHeight: "1.5" }}
+              >
                 <DocumentContent document={currentDocument} />
               </div>
             </div>
