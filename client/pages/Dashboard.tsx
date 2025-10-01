@@ -1,9 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Upload, FileText, Share, Trash2 } from "lucide-react";
+import { Upload, FileText, Share, Trash2, X } from "lucide-react";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+
+interface PendingUpload {
+  id: string;
+  file: File;
+  progress: number;
+  status: "uploading" | "completed" | "error";
+  error?: string;
+}
 
 interface Document {
   id: number;
