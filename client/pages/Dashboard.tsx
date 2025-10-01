@@ -278,13 +278,14 @@ export default function Dashboard() {
               Upload Zone
             </h2>
             <Card
-              className="bg-card/60 backdrop-blur border-border/60 border-2 border-dashed cursor-pointer hover:border-primary/60 transition-colors"
-              onDragOver={handleDragOver}
-              onDrop={handleDrop}
-              onClick={() => setIsUploadModalOpen(true)}
+              className="bg-card/60 backdrop-blur border-border/60 border-2 border-dashed transition-colors"
             >
-              <CardContent className="p-8">
-                <div className="text-center space-y-4">
+              <CardContent className="p-0">
+                <div
+                  className="p-8 text-center space-y-4"
+                  onDragOver={handleDragOver}
+                  onDrop={handleDrop}
+                >
                   <div className="mx-auto w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center">
                     <Upload className="w-8 h-8 text-primary" />
                   </div>
@@ -295,21 +296,98 @@ export default function Dashboard() {
                     <p className="text-sm text-muted-foreground">or</p>
                   </div>
                   <Button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setIsUploadModalOpen(true);
-                    }}
+                    onClick={handleBrowseClick}
                     className="bg-primary text-white hover:bg-primary/90"
                   >
                     Browse Files
                   </Button>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    multiple
+                    accept=".pdf,.doc,.docx,.txt,.xls,.xlsx"
+                    onChange={handleFileInput}
+                    className="hidden"
+                  />
                   <div className="pt-4 border-t border-border/40">
                     <p className="text-xs text-muted-foreground">
-                      Currently supported file types: PDF, DOCX, Word, Formats
-                      (XLSX), TXT, Transcripts (Coming Soon)
+                      Supported formats: PDF, DOC, DOCX, TXT, XLS, XLSX (up to 20MB each)
                     </p>
                   </div>
                 </div>
+
+                {uploadErrors.length > 0 && (
+                  <div className="border-t border-destructive/30 bg-destructive/10 px-6 py-4 text-left">
+                    <h3 className="text-sm font-semibold text-destructive mb-2">
+                      Upload Errors
+                    </h3>
+                    <ul className="space-y-1 text-xs text-destructive">
+                      {uploadErrors.map((error, index) => (
+                        <li key={index}>• {error}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {pendingUploads.length > 0 && (
+                  <div className="border-t border-border/40 p-6 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-sm font-semibold text-foreground">
+                        Uploading Files
+                      </h3>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={markUploadDone}
+                        disabled={!pendingUploads.some((upload) => upload.status === "completed")}
+                      >
+                        Done
+                      </Button>
+                    </div>
+                    <div className="space-y-3">
+                      {pendingUploads.map((upload) => (
+                        <div
+                          key={upload.id}
+                          className="border border-border rounded-lg p-4 bg-background/60"
+                        >
+                          <div className="flex items-start justify-between gap-4 mb-2">
+                            <div>
+                              <p className="text-sm font-medium text-foreground">
+                                {upload.file.name}
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                {(upload.file.size / 1024 / 1024).toFixed(2)} MB
+                              </p>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-6 w-6"
+                              onClick={() => removePendingUpload(upload.id)}
+                            >
+                              <X className="w-3 h-3" />
+                            </Button>
+                          </div>
+                          <div className="w-full h-2 bg-border/40 rounded-full overflow-hidden">
+                            <div
+                              className={`h-2 rounded-full transition-all ${
+                                upload.status === "completed"
+                                  ? "bg-green-500"
+                                  : "bg-primary"
+                              }`}
+                              style={{ width: `${upload.progress}%` }}
+                            />
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {upload.status === "completed"
+                              ? "Upload complete"
+                              : `${Math.round(upload.progress)}%`}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
