@@ -227,7 +227,7 @@ export default function DocumentViewer() {
             <span className="text-lg font-semibold text-white">Orion</span>
           </div>
 
-          <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+          <nav className="flex-1 min-h-0 overflow-y-auto px-3 py-4 space-y-1">
             <Button
               variant="ghost"
               className="w-full justify-start text-muted-foreground hover:text-white hover:bg-white/10"
