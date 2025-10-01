@@ -23,6 +23,7 @@ import {
   Download,
   Star,
   X,
+  LogOut,
 } from "lucide-react";
 import { toast } from "sonner";
 import UploadModal from "@/components/UploadModal";
