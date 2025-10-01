@@ -149,7 +149,6 @@ export default function DocumentViewer() {
     const updatedDocs = [...newFiles, ...documents];
     setDocuments(updatedDocs);
     localStorage.setItem("documents", JSON.stringify(updatedDocs));
-    toast.success(`${newFiles.length} file(s) uploaded successfully`);
 
     setCurrentDocument(newFiles[0]);
     navigate(`/documents/${newFiles[0].id}`, {
