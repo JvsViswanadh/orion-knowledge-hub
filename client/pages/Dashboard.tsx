@@ -464,7 +464,8 @@ export default function Dashboard() {
                     No records uploaded
                   </h3>
                   <p className="text-sm text-muted-foreground">
-                    Upload a document to get started. Your files will show up here once processed.
+                    Upload a document to get started. Your files will show up
+                    here once processed.
                   </p>
                 </div>
               ) : (
