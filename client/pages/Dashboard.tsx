@@ -4,6 +4,13 @@ import { Upload, FileText, Share, Trash2, X } from "lucide-react";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 
 interface PendingUpload {
   id: string;
@@ -223,6 +230,48 @@ export default function Dashboard() {
     setPendingUploads((prev) => prev.filter((upload) => upload.id !== id));
   };
 
+  const handleShareLink = async (doc: Document) => {
+    const baseUrl = window.location.origin;
+    const shareUrl = `${baseUrl}/documents/${doc.id}`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: doc.title,
+          text: doc.description,
+          url: shareUrl,
+        });
+        toast.success("Share sheet opened");
+        return;
+      } catch (error) {
+        if ((error as Error).name === "AbortError") {
+          return;
+        }
+      }
+    }
+
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      toast.success("Document link copied to clipboard");
+    } catch (error) {
+      toast.error("Unable to copy link. Please try again.");
+    }
+  };
+
+  const handleDownloadDocument = (doc: Document) => {
+    const content = `Title: ${doc.title}\nUploaded on: ${doc.uploadDate}\n\n${doc.description}`;
+    const blob = new Blob([content], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${doc.title.replace(/[^a-z0-9-]/gi, "_")}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    toast.success("Download started");
+  };
+
   return (
     <div className="min-h-screen orion-bg">
       {/* Header */}
@@ -408,60 +457,99 @@ export default function Dashboard() {
               Document Library
             </h2>
             <div className="space-y-4">
-              {documents.map((doc) => (
-                <Card
-                  key={doc.id}
-                  className="bg-card/60 backdrop-blur border-border/60 hover:bg-card/80 transition-colors cursor-pointer"
-                  onClick={() =>
-                    navigate(`/documents/${doc.id}`, {
-                      state: { documents },
-                    })
-                  }
-                >
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
-                          <FileText className="w-5 h-5 text-primary" />
+              {documents.length === 0 ? (
+                <div className="border border-border/60 rounded-lg bg-card/40 backdrop-blur p-10 text-center">
+                  <FileText className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                    No records uploaded
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    Upload a document to get started. Your files will show up here once processed.
+                  </p>
+                </div>
+              ) : (
+                documents.map((doc) => (
+                  <Card
+                    key={doc.id}
+                    className="bg-card/60 backdrop-blur border-border/60 hover:bg-card/80 transition-colors cursor-pointer"
+                    onClick={() =>
+                      navigate(`/documents/${doc.id}`, {
+                        state: { documents },
+                      })
+                    }
+                  >
+                    <CardContent className="p-6">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
+                            <FileText className="w-5 h-5 text-primary" />
+                          </div>
+                          <div>
+                            <h3 className="font-semibold text-foreground">
+                              {doc.title}
+                            </h3>
+                            <p className="text-sm text-muted-foreground">
+                              Uploaded on {doc.uploadDate}
+                            </p>
+                          </div>
                         </div>
-                        <div>
-                          <h3 className="font-semibold text-foreground">
-                            {doc.title}
-                          </h3>
-                          <p className="text-sm text-muted-foreground">
-                            Uploaded on {doc.uploadDate}
-                          </p>
+                        <div className="flex items-center gap-2">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8 text-muted-foreground hover:text-foreground"
+                                onClick={(event) => event.stopPropagation()}
+                              >
+                                <Share className="w-4 h-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent
+                              align="end"
+                              className="w-48"
+                              onClick={(event) => event.stopPropagation()}
+                            >
+                              <DropdownMenuItem
+                                onClick={(event) => {
+                                  event.stopPropagation();
+                                  handleShareLink(doc);
+                                }}
+                              >
+                                Share link
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem
+                                onClick={(event) => {
+                                  event.stopPropagation();
+                                  handleDownloadDocument(doc);
+                                }}
+                              >
+                                Download summary (.txt)
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                          <Button
+                            aria-label="Delete document"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDelete(doc.id);
+                            }}
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 text-muted-foreground hover:text-foreground"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <Share className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          aria-label="Delete document"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDelete(doc.id);
-                          }}
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      {doc.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        {doc.description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))
+              )}
             </div>
           </div>
         </div>
