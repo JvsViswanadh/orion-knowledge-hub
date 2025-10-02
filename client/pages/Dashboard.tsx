@@ -371,7 +371,7 @@ export default function Dashboard() {
                 </div>
 
                 {uploadErrors.length > 0 && (
-                  <div className="border-t border-destructive/30 bg-destructive/10 px-6 py-4 text-left">
+                  <div className="border-t border-destructive/30 bg-destructive/10 px-4 sm:px-6 py-4 text-left">
                     <h3 className="text-sm font-semibold text-destructive mb-2">
                       Upload Errors
                     </h3>
