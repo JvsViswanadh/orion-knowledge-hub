@@ -333,7 +333,7 @@ export default function Dashboard() {
             <h2 className="text-2xl font-semibold text-foreground">
               Upload Zone
             </h2>
-            <Card className="bg-card/60 backdrop-blur border-border/60 border-2 border-dashed transition-colors">
+            <Card className="w-full bg-card/60 backdrop-blur border-border/60 border-2 border-dashed transition-colors">
               <CardContent className="p-0">
                 <div
                   className="p-6 sm:p-8 text-center space-y-4"
