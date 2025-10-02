@@ -147,16 +147,19 @@ export default function Dashboard() {
           );
         }, 200);
 
-        setTimeout(() => {
-          clearInterval(interval);
-          setPendingUploads((prev) =>
-            prev.map((item) =>
-              item.id === upload.id
-                ? { ...item, progress: 100, status: "completed" }
-                : item,
-            ),
-          );
-        }, 2000 + Math.random() * 2000);
+        setTimeout(
+          () => {
+            clearInterval(interval);
+            setPendingUploads((prev) =>
+              prev.map((item) =>
+                item.id === upload.id
+                  ? { ...item, progress: 100, status: "completed" }
+                  : item,
+              ),
+            );
+          },
+          2000 + Math.random() * 2000,
+        );
       });
     },
     [validateFile],
@@ -190,7 +193,9 @@ export default function Dashboard() {
   };
 
   const markUploadDone = () => {
-    const completed = pendingUploads.filter((upload) => upload.status === "completed");
+    const completed = pendingUploads.filter(
+      (upload) => upload.status === "completed",
+    );
     if (completed.length === 0) {
       toast.error("No completed uploads to add");
       return;
@@ -208,7 +213,9 @@ export default function Dashboard() {
     }));
 
     setDocuments((prev) => [...newDocuments, ...prev]);
-    setPendingUploads((prev) => prev.filter((upload) => upload.status !== "completed"));
+    setPendingUploads((prev) =>
+      prev.filter((upload) => upload.status !== "completed"),
+    );
     toast.success(`${newDocuments.length} file(s) added to library`);
   };
 
@@ -277,9 +284,7 @@ export default function Dashboard() {
             <h2 className="text-2xl font-semibold text-foreground">
               Upload Zone
             </h2>
-            <Card
-              className="bg-card/60 backdrop-blur border-border/60 border-2 border-dashed transition-colors"
-            >
+            <Card className="bg-card/60 backdrop-blur border-border/60 border-2 border-dashed transition-colors">
               <CardContent className="p-0">
                 <div
                   className="p-8 text-center space-y-4"
@@ -311,7 +316,8 @@ export default function Dashboard() {
                   />
                   <div className="pt-4 border-t border-border/40">
                     <p className="text-xs text-muted-foreground">
-                      Supported formats: PDF, DOC, DOCX, TXT, XLS, XLSX (up to 20MB each)
+                      Supported formats: PDF, DOC, DOCX, TXT, XLS, XLSX (up to
+                      20MB each)
                     </p>
                   </div>
                 </div>
@@ -339,7 +345,11 @@ export default function Dashboard() {
                         variant="outline"
                         size="sm"
                         onClick={markUploadDone}
-                        disabled={!pendingUploads.some((upload) => upload.status === "completed")}
+                        disabled={
+                          !pendingUploads.some(
+                            (upload) => upload.status === "completed",
+                          )
+                        }
                       >
                         Done
                       </Button>
@@ -456,7 +466,6 @@ export default function Dashboard() {
           </div>
         </div>
       </main>
-
     </div>
   );
 }
