@@ -458,7 +458,7 @@ export default function Dashboard() {
             </h2>
             <div className="space-y-4">
               {documents.length === 0 ? (
-                <div className="border border-border/60 rounded-lg bg-card/40 backdrop-blur p-10 text-center">
+                <div className="border border-border/60 rounded-lg bg-card/40 backdrop-blur p-6 sm:p-10 text-center">
                   <FileText className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                   <h3 className="text-lg font-semibold text-foreground mb-2">
                     No records uploaded
@@ -479,8 +479,8 @@ export default function Dashboard() {
                       })
                     }
                   >
-                    <CardContent className="p-6">
-                      <div className="flex items-start justify-between mb-3">
+                    <CardContent className="p-4 sm:p-6">
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between mb-4">
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
                             <FileText className="w-5 h-5 text-primary" />
@@ -494,13 +494,13 @@ export default function Dashboard() {
                             </p>
                           </div>
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 sm:self-start">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="h-8 w-8 text-muted-foreground hover:text-foreground"
+                                className="h-9 w-9 text-muted-foreground hover:text-foreground"
                                 onClick={(event) => event.stopPropagation()}
                               >
                                 <Share className="w-4 h-4" />
