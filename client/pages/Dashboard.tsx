@@ -336,22 +336,22 @@ export default function Dashboard() {
             <Card className="bg-card/60 backdrop-blur border-border/60 border-2 border-dashed transition-colors">
               <CardContent className="p-0">
                 <div
-                  className="p-8 text-center space-y-4"
+                  className="p-6 sm:p-8 text-center space-y-4"
                   onDragOver={handleDragOver}
                   onDrop={handleDrop}
                 >
-                  <div className="mx-auto w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center">
-                    <Upload className="w-8 h-8 text-primary" />
+                  <div className="mx-auto w-14 h-14 sm:w-16 sm:h-16 bg-primary/20 rounded-full flex items-center justify-center">
+                    <Upload className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />
                   </div>
                   <div>
-                    <p className="text-lg font-medium text-foreground mb-1">
+                    <p className="text-base sm:text-lg font-medium text-foreground mb-1">
                       Drag & Drop Files Here
                     </p>
                     <p className="text-sm text-muted-foreground">or</p>
                   </div>
                   <Button
                     onClick={handleBrowseClick}
-                    className="bg-primary text-white hover:bg-primary/90"
+                    className="bg-primary text-white hover:bg-primary/90 w-full sm:w-auto"
                   >
                     Browse Files
                   </Button>
@@ -363,10 +363,9 @@ export default function Dashboard() {
                     onChange={handleFileInput}
                     className="hidden"
                   />
-                  <div className="pt-4 border-t border-border/40">
-                    <p className="text-xs text-muted-foreground">
-                      Supported formats: PDF, DOC, DOCX, TXT, XLS, XLSX (up to
-                      20MB each)
+                  <div className="pt-4 border-t border-border/40 text-left sm:text-center">
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      Supported formats: PDF, DOC, DOCX, TXT, XLS, XLSX (up to 20MB each)
                     </p>
                   </div>
                 </div>
@@ -385,8 +384,8 @@ export default function Dashboard() {
                 )}
 
                 {pendingUploads.length > 0 && (
-                  <div className="border-t border-border/40 p-6 space-y-3">
-                    <div className="flex items-center justify-between">
+                  <div className="border-t border-border/40 p-4 sm:p-6 space-y-3">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between text-left">
                       <h3 className="text-sm font-semibold text-foreground">
                         Uploading Files
                       </h3>
@@ -399,6 +398,7 @@ export default function Dashboard() {
                             (upload) => upload.status === "completed",
                           )
                         }
+                        className="w-full sm:w-auto"
                       >
                         Done
                       </Button>
@@ -409,9 +409,9 @@ export default function Dashboard() {
                           key={upload.id}
                           className="border border-border rounded-lg p-4 bg-background/60"
                         >
-                          <div className="flex items-start justify-between gap-4 mb-2">
-                            <div>
-                              <p className="text-sm font-medium text-foreground">
+                          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between mb-2">
+                            <div className="min-w-0">
+                              <p className="text-sm font-medium text-foreground break-words">
                                 {upload.file.name}
                               </p>
                               <p className="text-xs text-muted-foreground">
@@ -421,7 +421,7 @@ export default function Dashboard() {
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="h-6 w-6"
+                              className="h-6 w-6 self-start"
                               onClick={() => removePendingUpload(upload.id)}
                             >
                               <X className="w-3 h-3" />
