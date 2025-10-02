@@ -457,11 +457,6 @@ export default function Dashboard() {
         </div>
       </main>
 
-      <UploadModal
-        open={isUploadModalOpen}
-        onOpenChange={setIsUploadModalOpen}
-        onFilesUploaded={handleFilesUploaded}
-      />
     </div>
   );
 }
