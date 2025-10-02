@@ -326,8 +326,8 @@ export default function Dashboard() {
       </header>
 
       {/* Main Content */}
-      <main className="px-6 py-8">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-[400px,1fr] gap-8">
+      <main className="px-4 sm:px-6 py-8">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-[400px,1fr] gap-6 lg:gap-8">
           {/* Upload Zone */}
           <div className="space-y-4">
             <h2 className="text-2xl font-semibold text-foreground">
