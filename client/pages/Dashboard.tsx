@@ -409,7 +409,7 @@ export default function Dashboard() {
                           key={upload.id}
                           className="border border-border rounded-lg p-4 bg-background/60"
                         >
-                          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between mb-2">
+                          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between mb-3">
                             <div className="min-w-0">
                               <p className="text-sm font-medium text-foreground break-words">
                                 {upload.file.name}
