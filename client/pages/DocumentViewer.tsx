@@ -348,11 +348,11 @@ export default function DocumentViewer() {
             </Button>
           </div>
 
-          <div className="flex-1 min-h-0 overflow-auto p-6">
+          <div className="flex-1 min-h-0 overflow-auto p-4 sm:p-6">
             {currentDocument ? (
               <Card className="w-full max-w-4xl mx-auto bg-card/60 backdrop-blur border-border/60">
                 <CardContent
-                  className="p-8"
+                  className="p-4 sm:p-8"
                   style={{ fontSize: `${zoomLevel}%`, lineHeight: "1.5" }}
                 >
                   <DocumentContent document={currentDocument} />
