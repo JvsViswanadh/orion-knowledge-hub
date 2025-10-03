@@ -421,10 +421,10 @@ export default function Dashboard() {
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="h-6 w-6 self-start"
+                              className="h-8 w-8 self-start rounded-full border border-border/60"
                               onClick={() => removePendingUpload(upload.id)}
                             >
-                              <X className="w-3 h-3" />
+                              <X className="w-4 h-4" />
                             </Button>
                           </div>
                           <div className="w-full h-2 bg-border/40 rounded-full overflow-hidden">
