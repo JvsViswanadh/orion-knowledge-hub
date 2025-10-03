@@ -485,7 +485,7 @@ export default function Dashboard() {
                           <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
                             <FileText className="w-5 h-5 text-primary" />
                           </div>
-                          <div>
+                          <div className="min-w-0">
                             <h3 className="font-semibold text-foreground">
                               {doc.title}
                             </h3>
