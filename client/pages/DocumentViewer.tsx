@@ -213,7 +213,7 @@ export default function DocumentViewer() {
   return (
     <>
       <div className="min-h-screen lg:h-screen orion-bg flex flex-col lg:flex-row w-full overflow-hidden">
-        <aside className="w-full lg:w-[200px] shrink-0 bg-[#0A1628] border-b lg:border-b-0 lg:border-r border-border/20 flex flex-col h-auto lg:h-full overflow-hidden">
+        <aside className="w-full lg:w-[220px] shrink-0 bg-[#0A1628] border-b lg:border-b-0 lg:border-r border-border/20 flex flex-col h-auto lg:h-full overflow-hidden">
           <div className="p-4 flex items-center gap-2">
             <div className="w-5 h-5 bg-primary rounded">
               <svg
