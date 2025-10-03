@@ -384,7 +384,7 @@ export default function Dashboard() {
                 )}
 
                 {pendingUploads.length > 0 && (
-                  <div className="border-t border-border/40 p-4 sm:p-6 space-y-3">
+                  <div className="border-t border-border/40 p-4 sm:p-6 space-y-4">
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between text-left">
                       <h3 className="text-sm font-semibold text-foreground">
                         Uploading Files
