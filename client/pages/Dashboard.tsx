@@ -486,7 +486,7 @@ export default function Dashboard() {
                             <FileText className="w-5 h-5 text-primary" />
                           </div>
                           <div className="min-w-0">
-                            <h3 className="font-semibold text-foreground">
+                            <h3 className="font-semibold text-foreground break-words">
                               {doc.title}
                             </h3>
                             <p className="text-sm text-muted-foreground">
