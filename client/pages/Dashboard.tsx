@@ -494,7 +494,7 @@ export default function Dashboard() {
                             </p>
                           </div>
                         </div>
-                        <div className="flex items-center gap-2 sm:self-start">
+                        <div className="flex flex-wrap items-center gap-2 sm:self-start">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                               <Button
