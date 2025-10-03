@@ -300,31 +300,33 @@ export default function DocumentViewer() {
         </aside>
 
         <main className="flex-1 min-w-0 flex flex-col overflow-hidden order-3 lg:order-none">
-          <div className="h-14 px-6 flex items-center justify-between border-b border-border/20 bg-background/50 backdrop-blur">
-            <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8"
-                onClick={() =>
-                  setZoomLevel((value) => Math.max(50, value - 10))
-                }
-              >
-                <ZoomOut className="w-4 h-4" />
-              </Button>
-              <span className="text-sm font-medium text-foreground">
-                {zoomLevel}%
-              </span>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8"
-                onClick={() =>
-                  setZoomLevel((value) => Math.min(200, value + 10))
-                }
-              >
-                <ZoomIn className="w-4 h-4" />
-              </Button>
+          <div className="px-4 sm:px-6 py-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-border/20 bg-background/50 backdrop-blur">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={() =>
+                    setZoomLevel((value) => Math.max(50, value - 10))
+                  }
+                >
+                  <ZoomOut className="w-4 h-4" />
+                </Button>
+                <span className="text-sm font-medium text-foreground">
+                  {zoomLevel}%
+                </span>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={() =>
+                    setZoomLevel((value) => Math.min(200, value + 10))
+                  }
+                >
+                  <ZoomIn className="w-4 h-4" />
+                </Button>
+              </div>
               <Button
                 variant="ghost"
                 size="icon"
@@ -339,7 +341,7 @@ export default function DocumentViewer() {
 
             <Button
               onClick={() => setIsUploadModalOpen(true)}
-              className="bg-primary text-white hover:bg-primary/90"
+              className="bg-primary text-white hover:bg-primary/90 w-full sm:w-auto"
             >
               <Upload className="w-4 h-4 mr-2" />
               New Upload
