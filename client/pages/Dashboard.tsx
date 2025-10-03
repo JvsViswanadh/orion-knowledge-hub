@@ -544,7 +544,7 @@ export default function Dashboard() {
                           </Button>
                         </div>
                       </div>
-                      <p className="text-sm text-muted-foreground leading-relaxed">
+                      <p className="text-sm text-muted-foreground leading-relaxed break-words">
                         {doc.description}
                       </p>
                     </CardContent>
