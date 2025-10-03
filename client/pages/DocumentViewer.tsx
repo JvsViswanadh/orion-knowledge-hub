@@ -299,7 +299,7 @@ export default function DocumentViewer() {
           </div>
         </aside>
 
-        <main className="flex-1 min-w-0 flex flex-col overflow-hidden">
+        <main className="flex-1 min-w-0 flex flex-col overflow-hidden order-3 lg:order-none">
           <div className="h-14 px-6 flex items-center justify-between border-b border-border/20 bg-background/50 backdrop-blur">
             <div className="flex items-center gap-4">
               <Button
