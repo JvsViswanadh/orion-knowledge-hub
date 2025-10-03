@@ -360,7 +360,7 @@ export default function DocumentViewer() {
               </Card>
             ) : (
               <div className="flex items-center justify-center h-full">
-                <div className="text-center space-y-4">
+                <div className="text-center space-y-4 px-6">
                   <FileText className="w-16 h-16 mx-auto text-muted-foreground" />
                   <p className="text-lg text-muted-foreground">
                     No document selected
