@@ -1,6 +1,6 @@
 import { supabase } from '../../src/lib/supabase';
 
-const redirectTo = `${window.location.origin}/dashboard`;
+const redirectTo = `${window.location.origin}/#/dashboard`;
 
 export async function signInWithGoogle() {
   try {
