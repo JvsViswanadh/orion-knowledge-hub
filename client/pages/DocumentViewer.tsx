@@ -224,7 +224,7 @@ export default function DocumentViewer() {
                 <rect width="24" height="24" rx="4" />
               </svg>
             </div>
-            <span className="text-lg font-semibold text-white">Orion</span>
+            <span className="text-lg font-semibold text-white">OKH</span>
           </div>
 
           <nav className="flex-1 min-h-0 overflow-y-auto px-3 py-4 space-y-1">
