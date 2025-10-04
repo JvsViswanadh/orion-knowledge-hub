@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useRef } from "react";
+import { useState } from "react";
+import { supabase } from '../../src/lib/supabase';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -7,10 +8,94 @@ import { Label } from "@/components/ui/label";
 
 export default function Signup() {
   const navigate = useNavigate();
-  const emailRef = useRef<HTMLInputElement | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
 
   const goLogin = () => navigate("/login", { state: { focusEmail: true } });
-  const goDashboard = () => navigate("/dashboard");
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [id]: value
+    }));
+  };
+
+  const handleEmailSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const { data, error } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          emailRedirectTo: window.location.origin + '/dashboard'
+        }
+      });
+
+      if (error) throw error;
+      
+      console.log('Signup successful:', data);
+      navigate('/dashboard');
+    } catch (err: any) {
+      console.error('Signup error:', err);
+      setError(err.message || 'An error occurred during signup');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSignup = async () => {
+    try {
+      setLoading(true);
+      setError('');
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: window.location.origin + '/dashboard'
+        }
+      });
+
+      if (error) throw error;
+      // OAuth will handle redirect automatically
+    } catch (err: any) {
+      console.error('Google signup error:', err);
+      setError(err.message || 'An error occurred during Google signup');
+      setLoading(false);
+    }
+  };
+
+  const handleLinkedInSignup = async () => {
+    try {
+      setLoading(true);
+      setError('');
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'linkedin',
+        options: {
+          redirectTo: window.location.origin + '/dashboard'
+        }
+      });
+
+      if (error) throw error;
+      // OAuth will handle redirect automatically
+    } catch (err: any) {
+      console.error('LinkedIn signup error:', err);
+      setError(err.message || 'An error occurred during LinkedIn signup');
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen orion-bg flex flex-col">
@@ -26,7 +111,7 @@ export default function Signup() {
             </svg>
           </div>
           <span className="text-xl font-semibold text-foreground">
-            Orion Knowledge Hub
+            OKH
           </span>
         </Link>
         <Button
@@ -53,41 +138,56 @@ export default function Signup() {
 
             <Card className="bg-card/60 backdrop-blur border-border/60 shadow-lg shadow-primary/10">
               <CardContent className="space-y-5 pt-6">
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    ref={emailRef}
-                    id="email"
-                    type="email"
-                    placeholder="you@example.com"
-                    autoComplete="email"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder="•••••���••"
-                    autoComplete="new-password"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="confirm">Confirm Password</Label>
-                  <Input
-                    id="confirm"
-                    type="password"
-                    placeholder="••••••••"
-                    autoComplete="new-password"
-                  />
-                </div>
-                <Button
-                  type="button"
-                  onClick={goDashboard}
-                  className="w-full bg-primary text-white hover:bg-primary/90"
-                >
-                  Create Account
-                </Button>
+                <form onSubmit={handleEmailSignup} className="space-y-5">
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="you@example.com"
+                      autoComplete="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="password">Password</Label>
+                    <Input
+                      id="password"
+                      type="password"
+                      placeholder="••••••••"
+                      autoComplete="new-password"
+                      value={formData.password}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="confirmPassword">Confirm Password</Label>
+                    <Input
+                      id="confirmPassword"
+                      type="password"
+                      placeholder="••••••••"
+                      autoComplete="new-password"
+                      value={formData.confirmPassword}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  
+                  {error && (
+                    <div className="text-sm text-destructive text-center">{error}</div>
+                  )}
+
+                  <Button
+                    type="submit"
+                    className="w-full bg-primary text-white hover:bg-primary/90"
+                    disabled={loading}
+                  >
+                    {loading ? 'Creating Account...' : 'Create Account'}
+                  </Button>
+                </form>
                 <div className="flex items-center gap-3">
                   <div className="h-px flex-1 bg-border" />
                   <span className="text-xs text-muted-foreground">
@@ -99,7 +199,8 @@ export default function Signup() {
                   <Button
                     variant="outline"
                     className="bg-background/60 backdrop-blur"
-                    onClick={goLogin}
+                    onClick={handleGoogleSignup}
+                    disabled={loading}
                   >
                     <svg
                       aria-hidden="true"
@@ -128,7 +229,8 @@ export default function Signup() {
                   <Button
                     variant="outline"
                     className="bg-background/60 backdrop-blur"
-                    onClick={goLogin}
+                    onClick={handleLinkedInSignup}
+                    disabled={loading}
                   >
                     <svg
                       aria-hidden="true"

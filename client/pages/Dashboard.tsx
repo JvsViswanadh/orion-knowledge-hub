@@ -4,6 +4,7 @@ import { Upload, FileText, Share, Trash2, X } from "lucide-react";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { signOutUser } from "../../src/lib/supabase";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -42,22 +43,22 @@ export default function Dashboard() {
   const initialDocs = [
     {
       id: 1,
-      title: "Market Analysis Report Q3 2024",
-      uploadDate: "Oct 15, 2024",
+        title: "Market Analysis Report Q3 2024",
+        uploadDate: "November 15, 2024",
       description:
         "The market showed strong growth in the tech sector, with a notable increase in AI investments. Consumer spending remained steady, but inflation concerns persist. Key trends include the rise of decentralized finance and...",
     },
     {
       id: 2,
-      title: "Project Phoenix: Initial Proposal",
-      uploadDate: "Oct 12, 2024",
+        title: "Project Phoenix: Initial Proposal",
+        uploadDate: "November 12, 2024",
       description:
         "This document outlines the initial proposal for Project Phoenix, a strategic initiative to overhaul our digital infrastructure. It covers goals, timeline, budget estimates, and key stakeholders. The project aims to enhance...",
     },
     {
       id: 3,
-      title: "User Onboarding Feedback",
-      uploadDate: "Oct 11, 2024",
+        title: "User Onboarding Feedback",
+        uploadDate: "November 11, 2024",
       description:
         "A compilation of user feedback regarding the new onboarding flow. Common themes include a desire for more guided tours, clearer call-to-actions, and a more personalized experience. Several users reported...",
     },
@@ -88,8 +89,13 @@ export default function Dashboard() {
     });
   };
 
-  const handleLogout = () => {
-    navigate("/login");
+  const handleLogout = async () => {
+    try {
+      await signOutUser();
+      navigate("/login");
+    } catch (error) {
+      toast.error("Failed to logout. Please try again.");
+    }
   };
 
   const validateFile = useCallback(
@@ -287,7 +293,7 @@ export default function Dashboard() {
             </svg>
           </div>
           <span className="text-xl font-semibold text-foreground">
-            Orion Hub
+            OKH
           </span>
         </div>
 
@@ -317,7 +323,7 @@ export default function Dashboard() {
             Contact
           </a>
           <Button
-            onClick={handleLogout}
+           onClick={() => navigate("/login")}
             className="bg-destructive text-white hover:bg-destructive/90 px-6"
           >
             Log Out
@@ -330,6 +336,9 @@ export default function Dashboard() {
         <div className="max-w-7xl mx-auto grid lg:grid-cols-[400px,1fr] gap-6 lg:gap-8">
           {/* Upload Zone */}
           <div className="space-y-4">
+            <h1 className="text-3xl md:text-4xl font-bold text-foreground">
+                Welcome Back
+              </h1>
             <h2 className="text-2xl font-semibold text-foreground">
               Upload Zone
             </h2>

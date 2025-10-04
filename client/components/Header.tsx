@@ -15,7 +15,7 @@ export default function Header() {
             <rect width="24" height="24" rx="4" />
           </svg>
         </div>
-        <span className="text-xl font-semibold text-foreground">Orion</span>
+        <span className="text-xl font-semibold text-foreground">OKH</span>
       </div>
 
       {/* Navigation Buttons */}

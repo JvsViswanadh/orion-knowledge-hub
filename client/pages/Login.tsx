@@ -1,14 +1,22 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { supabase } from '../../src/lib/supabase';
+import { signInWithGoogle, signInWithLinkedIn } from '../lib/auth';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Login() {
   const location = useLocation();
   const navigate = useNavigate();
   const emailRef = useRef<HTMLInputElement | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
 
   useEffect(() => {
     const state = (location.state as { focusEmail?: boolean } | null) || null;
@@ -17,6 +25,77 @@ export default function Login() {
       setTimeout(() => emailRef.current?.focus({ preventScroll: true }), 350);
     }
   }, [location]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [id]: value
+    }));
+  };
+
+  const handleEmailLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+
+    try {
+      setLoading(true);
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (signInError) throw signInError;
+
+      // If we reach here, authentication was successful (equivalent to 200 status)
+      if (data && data.user) {
+        console.log('Login successful, redirecting to dashboard');
+        navigate('/dashboard');
+      } else {
+        throw new Error('Authentication succeeded but no user was returned');
+      }
+    } catch (err: any) {
+      setError(err.message || 'An error occurred during login');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      setLoading(true);
+      setError('');
+      const data = await signInWithGoogle();
+      
+      // For OAuth providers, the redirect happens automatically
+      // This code will only run if the OAuth flow doesn't redirect
+      if (data) {
+        console.log('Google login successful, redirecting to dashboard');
+        navigate('/dashboard');
+      }
+    } catch (err: any) {
+      setError(err.message || 'An error occurred during Google login');
+      setLoading(false);
+    }
+  };
+
+  const handleLinkedInLogin = async () => {
+    try {
+      setLoading(true);
+      setError('');
+      const data = await signInWithLinkedIn();
+      
+      // For OAuth providers, the redirect happens automatically
+      // This code will only run if the OAuth flow doesn't redirect
+      if (data) {
+        console.log('LinkedIn login successful, redirecting to dashboard');
+        navigate('/dashboard');
+      }
+    } catch (err: any) {
+      setError(err.message || 'An error occurred during LinkedIn login');
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen orion-bg flex flex-col">
@@ -32,14 +111,14 @@ export default function Login() {
               <rect width="24" height="24" rx="4" />
             </svg>
           </div>
-          <span className="text-xl font-semibold text-foreground">Orion</span>
+          <span className="text-xl font-semibold text-foreground">OKH</span>
         </Link>
         <Button
           asChild
           variant="ghost"
           className="text-foreground hover:text-primary hover:bg-transparent"
         >
-          <Link to="/">Back to site</Link>
+          <Link to="/">Back to Home</Link>
         </Button>
       </header>
 
@@ -58,31 +137,45 @@ export default function Login() {
 
             <Card className="bg-card/60 backdrop-blur border-border/60 shadow-lg shadow-primary/10">
               <CardContent className="space-y-5 pt-6">
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    ref={emailRef}
-                    id="email"
-                    type="email"
-                    placeholder="you@example.com"
-                    autoComplete="email"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder="••••••••"
-                    autoComplete="current-password"
-                  />
-                </div>
-                <Button
-                  onClick={() => navigate("/dashboard")}
-                  className="w-full bg-primary text-white hover:bg-primary/90"
-                >
-                  Continue to Dashboard
-                </Button>
+                <form onSubmit={handleEmailLogin} className="space-y-5">
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      ref={emailRef}
+                      id="email"
+                      type="email"
+                      placeholder="you@example.com"
+                      autoComplete="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="password">Password</Label>
+                    <Input
+                      id="password"
+                      type="password"
+                      placeholder="••••••••"
+                      autoComplete="current-password"
+                      value={formData.password}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+
+                  {error && (
+                    <div className="text-sm text-destructive text-center">{error}</div>
+                  )}
+
+                  <Button
+                    type="submit"
+                    className="w-full bg-primary text-white hover:bg-primary/90"
+                    disabled={loading}
+                  >
+                    {loading ? 'Logging in...' : 'Log in'}
+                  </Button>
+                </form>
                 <div className="flex items-center gap-3">
                   <div className="h-px flex-1 bg-border" />
                   <span className="text-xs text-muted-foreground">
@@ -94,6 +187,8 @@ export default function Login() {
                   <Button
                     variant="outline"
                     className="bg-background/60 backdrop-blur"
+                    onClick={handleGoogleLogin}
+                    disabled={loading}
                   >
                     <svg
                       aria-hidden="true"
@@ -122,6 +217,8 @@ export default function Login() {
                   <Button
                     variant="outline"
                     className="bg-background/60 backdrop-blur"
+                    onClick={handleLinkedInLogin}
+                    disabled={loading}
                   >
                     <svg
                       aria-hidden="true"
