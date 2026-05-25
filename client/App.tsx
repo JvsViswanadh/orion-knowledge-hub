@@ -19,7 +19,7 @@ const App = () => {
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
+      <BrowserRouter basename="/orion-knowledge-hub/">
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
