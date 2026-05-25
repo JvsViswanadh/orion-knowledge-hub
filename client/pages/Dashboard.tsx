@@ -4,7 +4,6 @@ import { Upload, FileText, Share, Trash2, X } from "lucide-react";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { signOutUser } from "../../src/lib/supabase";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -89,13 +88,8 @@ export default function Dashboard() {
     });
   };
 
-  const handleLogout = async () => {
-    try {
-      await signOutUser();
-      navigate("/login");
-    } catch (error) {
-      toast.error("Failed to logout. Please try again.");
-    }
+  const handleLogout = () => {
+    navigate("/login");
   };
 
   const validateFile = useCallback(

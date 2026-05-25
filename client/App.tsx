@@ -6,8 +6,6 @@ import type { Root } from "react-dom/client";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useEffect } from "react";
-import { supabase } from "../src/lib/supabase";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
@@ -16,35 +14,6 @@ import Dashboard from "./pages/Dashboard";
 import DocumentViewer from "./pages/DocumentViewer";
 
 const App = () => {
-  useEffect(() => {
-    // Listen for auth state changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session) {
-        // Get user data from the session
-        const { user } = session;
-        
-        // Upsert the user profile
-        const { error } = await supabase
-          .from('profiles')
-          .upsert({
-            id: user.id,
-            full_name: user.user_metadata?.full_name,
-            email: user.email
-          }, {
-            onConflict: 'id'
-          });
-
-        if (error) {
-          console.error('Error upserting profile:', error);
-        }
-      }
-    });
-
-    // Cleanup subscription on unmount
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
 
   return (
     <TooltipProvider>

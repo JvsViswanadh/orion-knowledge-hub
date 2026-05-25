@@ -1,22 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { supabase } from '../../src/lib/supabase';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 export default function Signup() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
+  const [error] = useState('');
 
-  const goLogin = () => navigate("/login", { state: { focusEmail: true } });
+  const handleSignup = () => {
+    navigate('/dashboard');
+  };
+
+  const goLogin = () => navigate("/login");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -138,56 +132,18 @@ export default function Signup() {
 
             <Card className="bg-card/60 backdrop-blur border-border/60 shadow-lg shadow-primary/10">
               <CardContent className="space-y-5 pt-6">
-                <form onSubmit={handleEmailSignup} className="space-y-5">
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="you@example.com"
-                      autoComplete="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
-                    <Input
-                      id="password"
-                      type="password"
-                      placeholder="••••••••"
-                      autoComplete="new-password"
-                      value={formData.password}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="confirmPassword">Confirm Password</Label>
-                    <Input
-                      id="confirmPassword"
-                      type="password"
-                      placeholder="••••••••"
-                      autoComplete="new-password"
-                      value={formData.confirmPassword}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-                  
+                <div className="space-y-5">
                   {error && (
                     <div className="text-sm text-destructive text-center">{error}</div>
                   )}
 
                   <Button
-                    type="submit"
+                    onClick={handleSignup}
                     className="w-full bg-primary text-white hover:bg-primary/90"
-                    disabled={loading}
                   >
-                    {loading ? 'Creating Account...' : 'Create Account'}
+                    Create Account
                   </Button>
-                </form>
+                </div>
                 <div className="flex items-center gap-3">
                   <div className="h-px flex-1 bg-border" />
                   <span className="text-xs text-muted-foreground">
@@ -199,8 +155,7 @@ export default function Signup() {
                   <Button
                     variant="outline"
                     className="bg-background/60 backdrop-blur"
-                    onClick={handleGoogleSignup}
-                    disabled={loading}
+                    onClick={handleSignup}
                   >
                     <svg
                       aria-hidden="true"
@@ -229,8 +184,7 @@ export default function Signup() {
                   <Button
                     variant="outline"
                     className="bg-background/60 backdrop-blur"
-                    onClick={handleLinkedInSignup}
-                    disabled={loading}
+                    onClick={handleSignup}
                   >
                     <svg
                       aria-hidden="true"
